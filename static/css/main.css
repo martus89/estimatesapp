@@ -1,5 +1,5 @@
 body{
-    background-color: #FCFFE7;
+    background-color: #F1EEE9;
     font-family: Roboto, sans-serif;
 }
 
@@ -14,7 +14,7 @@ p {
 }
 
 .card {
-    background-color: #FCFFE7;
+    background-color: #F1EEE9;
     margin-top: 100px;
     margin-right: 150px;
     margin-bottom: 350px;
@@ -23,11 +23,6 @@ p {
 
 }
 
-.navbar bg-light {
-    navbar-color: #FCFFE7;
-    navbar-brand-color: blue;
-
-}
 
 #cart-icon {
     height: 30px;
@@ -48,7 +43,7 @@ p {
 
 .box-element{
 	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
-	background-color: #fff;
+	background-color: #F1EEE9;
 	border-radius: 4px;
 	padding: 10px;
 }
@@ -116,7 +111,7 @@ p {
 
 .cart-row{
 	display: flex;
-    align-items: flex-stretch;
+    align-items: flex-start;
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #ececec;

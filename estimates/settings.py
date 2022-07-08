@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "calculator",
     "calculator.templates",
-
-
 ]
 
 MIDDLEWARE = [

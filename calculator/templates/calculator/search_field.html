@@ -1,0 +1,15 @@
+{% extends "calculator/manual.html" %}
+{% load static %}
+{% block content %}
+
+    {% if searched %}
+        <p>Search results for {{ searched }}</p>
+        <br>
+        {% for quote in quotes %}
+            {{ quote }}
+        {% endfor %}
+    {% else %}
+        <p>"Search" field missing input</p>
+    <br>
+    {% endif %}
+{% endblock content %}

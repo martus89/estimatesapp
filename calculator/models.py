@@ -1,14 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
-class Employee(models.Model):
-	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-	name = models.CharField(max_length=30, default="Karen")
-	email = models.EmailField(max_length=20)
-
-	def __str__(self):
-		return self.email
+from django.conf import settings
+from django.core.validators import MinValueValidator
 
 
 class Service(models.Model):
@@ -48,33 +41,42 @@ class Service(models.Model):
 	]
 	group = models.CharField(max_length=15, choices=GROUP_CHOICES, default=OTHER)
 	name = models.CharField(max_length=200)
-	price = models.DecimalField(decimal_places=2, max_digits=6)
+	slug = models.SlugField()
+	price = models.DecimalField(decimal_places=2, max_digits=6, validators=[MinValueValidator(1)], null=True)
 	unit = models.CharField(max_length=15, choices=UNIT_CHOICES, default=NA)
-	comment = models.CharField(max_length=250)
+	comment = models.CharField(max_length=250, blank=True, null=True)
+	last_update = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.name
+		return str(self.name)
+
+	class Meta:
+		ordering = ['name']
 
 
 class Customer(models.Model):
 	customer_name = models.CharField(max_length=100)
-	customer_info = models.CharField(max_length=100)
+	customer_info = models.CharField(max_length=100, null=True, blank=True)
 
 	def __str__(self):
-		return self.customer_name
+		return str(self.customer_name)
 
 
 class Quote(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 	date_saved = models.DateTimeField(auto_now=True)
-	employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-	comment = models.CharField(max_length=300, null=True)
+	customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+	slug = models.SlugField()
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, auto_created=True)
+	comment = models.CharField(max_length=300, null=True, blank=True)
 
 	def __str__(self):
-		return str(self.customer.customer_name)
+		return str(self.customer)
 
 
 class QuoteItem(models.Model):
-	order = models.ForeignKey(Quote, on_delete=models.SET_NULL, null=True)
-	service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
-	quantity = models.IntegerField(default=0, null=True, blank=True)
+	quote = models.ForeignKey(Quote, on_delete=models.PROTECT)
+	name = models.ForeignKey(Service, on_delete=models.PROTECT)
+	quantity = models.PositiveIntegerField(default=1, blank=True, null=False)
+
+	def __str__(self):
+		return str(self.name)

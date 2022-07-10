@@ -1,35 +1,66 @@
-{% extends "calculator/manual.html" %}
+{% extends "calculator/raw_page.html" %}
 {% load static %}
 {% block content %}
 
-    <div class="col-lg-12">
+    <div class="container">
     <br><br>
-QUOTE DETAIL HERE
-    <br><br>
-			<div class="box-element">
-				<div class="cart-row">
-					<div style="flex:1"><strong>ID</strong></div>
-					<div style="flex:1"><strong>Service group</strong></div>
-					<div style="flex:1"><strong>Service name</strong></div>
-					<div style="flex:1"><strong>Price</strong></div>
-					<div style="flex:1"><strong>Unit</strong></div>
-                    <div style="flex:1"><strong>Comment</strong></div>
-
-				</div>
-                {% for items in offer %}
-				<div class="cart-row">
-					<div style="flex:1"><p>{{ items.id }}</p></div>
-					<div style="flex:1"><p>{{ items.group }}</p></div>
-					<div style="flex:1"><p>{{ items.name }}</p></div>
-					<div style="flex:1"><p>{{ items.price }}</p></div>
-					<div style="flex:1"><p>{{ items.unit }}</p></div>
-                    <div style="flex:1"><p>{{ items.comment }}</p></div>
 
 
-				</div>
-                {% endfor %}
-			</div>
+    <a href="{% url "history" %}"><button class="btn btn-outline-secondary me-2" type="button" style="margin-top:10px">
+    Return
+  </button></a><br>
+
+    QUOTE DETAIL HERE!!! {{ quote.slug }}
+
+    {% if message %}
+    {{ message }}
+    {% endif %}
+<div style="margin-top: 30px;">
+<form action = "" method="POST">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+    {% if item in items_form  %}
+        {{ item.service.as_p }}
+        {{ item.name.as_p  }}
+        {{ item.quantity.as_p  }}
+
+    {% endif %}
+
+     <a href="{% url "history" %}"><button class="btn btn-outline-secondary me-2" type="button" style="margin-top:10px">
+    Save
+  </button></a>
+
+   </form>
     </div>
-{% endblock content %}
+<script>
+
+    document.addEventListener('click', (event)=>{
+        if (event.target.id == 'add-more') {
+            add_new_form(event)
+        }
+    })
+    function add_new_form(event) {
+        if (event) {
+            event.preventDefault()
+        }
+        const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
+        const currentIngredientForms = document.getElementsByClassName('ingredient-form')
+        const currentFormCount = currentIngredientForms.length // + 1
+        const formCopyTarget = document.getElementById('ingredient-form-list')
+        const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
+        copyEmptyFormEl.setAttribute('class', 'ingredient-form')
+        copyEmptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+        const regex = new RegExp('__prefix__', 'g')
+        copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)
+        totalNewForms.setAttribute('value', currentFormCount + 1)
+        // now add new empty form element to our html form
+        formCopyTarget.append(copyEmptyFormEl)
+    }
+</script>
 
 
+{% endblock content%}
+</script>
+</div>

@@ -1,15 +1,40 @@
-{% extends "calculator/manual.html" %}
+{% extends "calculator/raw_page.html" %}
 {% load static %}
+
 {% block content %}
 
-    {% if searched %}
-        <p>Search results for {{ searched }}</p>
-        <br>
-        {% for quote in quotes %}
-            {{ quote }}
-        {% endfor %}
-    {% else %}
-        <p>"Search" field missing input</p>
-    <br>
-    {% endif %}
-{% endblock content %}
+<div class="container">
+    {% if search_nav %}
+            <p>Search results for: "{{ search_nav }}"</p>
+        <div class="table-responsive">
+          <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date saved</th>
+                                  <th scope="col">Customer name</th>
+                                  <th scope="col">Created by</th>
+                                  <th scope="col">Comment</th>
+                                  <th scope="col"></th>
+                                </tr>
+                            </thead>
+                {% for i in quote %}
+                                <tbody>
+                                    <tr>
+                                      <td>{{ i.slug }}</td>
+                                      <td>{{ i.date_saved }}</td>
+                                      <td>{{ i.customer }}</td>
+                                      <td>{{ i.user }}</td>
+                                      <td>{{ i.comment }}</td>
+                         <td><a href="{{ i.get_absolute_url }}"><button type="button" class="btn btn-outline-secondary">Open</button></a></td>
+                        </tr>
+                {% endfor %}
+
+                {% else %}
+                    <p>"Search" field missing input!</p>
+          </table>
+                {% endif %}
+
+        </div>
+    {% endblock %}
+</div>

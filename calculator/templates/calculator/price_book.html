@@ -1,0 +1,41 @@
+{% extends "calculator/raw_page.html" %}
+{% load static %}
+{% block content %}
+
+        <div class="container">
+    <br><br>
+            <p>Current price book:</p>
+    <br><br>
+        <div class="table-responsive">
+          <table class="table">
+                            <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Service group</th>
+                                  <th scope="col">Service name</th>
+                                  <th scope="col">Price</th>
+                                  <th scope="col">Unit</th>
+                                  <th scope="col">Last update</th>
+                                  <th scope="col">Comment</th>
+                                </tr>
+                            </thead>
+          <tbody>
+                {% for items in offer %}
+
+                    <tr>
+                        <td>{{ items.id }}</td>
+                        <td>{{ items.group }}</td>
+                        <td>{{ items.name }}</td>
+                        <td>{{ items.priceEUR }} €</td>
+                        <td>{{ items.unit }}</td>
+                        <td>{{ items.last_update }}</td>
+                        <td>{{ items.comment }}</td>
+                    </tr>
+
+
+                {% endfor %}
+          </tbody>
+          </table>
+    </div>
+        </div>
+{% endblock content %}

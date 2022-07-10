@@ -1,0 +1,14 @@
+{% extends "calculator/raw_page.html" %}
+{% load static %}
+{% block content %}
+
+    <h1 style="margin-bottom: 30px">Select customer to create quote:</h1>
+
+    <form action="" method="POST">
+    {% csrf_token %}
+
+        {{ form.as_p }}
+
+    <a href="{% url "history" %}"><button type="submit" class="btn btn-outline-secondary">Save</button></a>
+    </form>
+{% endblock content %}

@@ -1,13 +1,13 @@
 from . import models
 from django.contrib import admin
+from django.utils.text import slugify
+from datetime import datetime
 
 
 @admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
-    prepopulated_fields = {
-        "slug": ["group", "name"]
-    }
-    list_display = ["id", 'group', "name", "slug", "price", "unit", "last_update", "comment"]
+    readonly_fields = ["id", "last_update"]
+    list_display = ["id", 'group', "name", "priceEUR", "unit", "comment", "last_update"]
     list_per_page = 15
     search_fields = ['group__startswith', "name__startswith", "comment__startswith"]
     list_filter = ['group', 'last_update']
@@ -36,7 +36,7 @@ class QuoteItemInLine(admin.TabularInline):
     search_fields = ["service_group", "name"]
     autocomplete_fields = ['name']
     extra = 0
-    min_num = 1
+    min_num = 0
     max_num = 10
 
     def service_group(self, obj):
@@ -46,19 +46,15 @@ class QuoteItemInLine(admin.TabularInline):
         return obj.name.unit
 
     def service_price(self, obj):
-        return obj.name.price
+        return obj.name.priceEUR
 
     def line_total(self, obj):
-        return obj.name.price * obj.quantity
+        return obj.name.priceEUR * obj.quantity
 
 
 @admin.register(models.Quote)
 class QuoteAdmin(admin.ModelAdmin):
-    prepopulated_fields = {
-        "slug": ["customer", "slug"]
-    }
-
-    readonly_fields = ["date_saved"]
+    readonly_fields = ["date_saved", "slug"]
     list_display = ["id", "date_saved", 'customer', "user"]
     list_per_page = 15
     search_fields = ['customer', "user"]

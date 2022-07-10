@@ -1,28 +1,19 @@
 from django.forms import ModelForm
 from django.forms.models import (inlineformset_factory, modelformset_factory, modelform_factory)
-from .models import *
+from .models import Quote, QuoteItem
 from django import forms
 
 
-class QuoteForm(forms.ModelForm):
+class QuoteForm(ModelForm):
+
     class Meta:
         model = Quote
-        fields = ["customer", "comment"]
+        fields = ["customer", "user_id", "comment"]
+        exclude=["user_id"]
 
 
-class QuoteItemForm(forms.ModelForm):
+class QuoteItemForm(ModelForm):
+
     class Meta:
         model = QuoteItem
-        fields = "__all__"
-
-
-QuoteItemFormSet = inlineformset_factory(
-    Quote,
-    QuoteItem,
-    QuoteItemForm,
-    can_delete=False,
-    min_num=1,
-    extra=0,
-    can_delete_extra=True
-
-)
+        fields = ["name", "quantity"]
